@@ -2,16 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Cancel01Icon, Pdf01Icon, File01Icon } from '@hugeicons/core-free-icons';
 
-// For people who arrive without a document handy: one click loads a sample
-// through the exact same pipeline a real upload takes. The five samples cover
-// every schema we support and every reading path (digital, scan, Word).
 const SAMPLES = [
-  { id: '1040', name: 'Form 1040', detail: 'Digital PDF, filled in', icon: Pdf01Icon },
-  { id: '1040-scanned', name: 'Form 1040', detail: 'Scanned copy, read on your device', icon: Pdf01Icon },
-  { id: 'w2', name: 'Form W-2', detail: 'Payroll-style PDF', icon: Pdf01Icon },
-  { id: '1099int', name: 'Form 1099-INT', detail: 'Brokerage-style PDF', icon: Pdf01Icon },
-  { id: 'w2-docx', name: 'Form W-2', detail: 'Word file, matched by AI', icon: File01Icon },
+  { id: '1040', name: 'Form 1040', size: 182621, icon: Pdf01Icon },
+  { id: '1040-scanned', name: 'Form 1040', size: 1151883, icon: Pdf01Icon },
+  { id: 'w2', name: 'Form W-2', size: 2552, icon: Pdf01Icon },
+  { id: '1099int', name: 'Form 1099-INT', size: 2151, icon: Pdf01Icon },
+  { id: 'w2-docx', name: 'Form W-2', size: 1299, icon: File01Icon },
 ];
+
+function formatSize(bytes) {
+  if (bytes >= 1048576) return `${(bytes / 1048576).toFixed(1)} MB`;
+  if (bytes >= 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${bytes} B`;
+}
 
 export default function SampleDocsModal({ open, onClose, onPick }) {
   const [busyId, setBusyId] = useState(null);
@@ -71,7 +74,7 @@ export default function SampleDocsModal({ open, onClose, onPick }) {
                 </span>
                 <span className="sample-item__text">
                   <strong>{s.name}</strong>
-                  <span>{s.detail}</span>
+                  <span>{formatSize(s.size)}</span>
                 </span>
                 {busyId === s.id && <span className="spinner" aria-label="Loading" />}
               </button>
