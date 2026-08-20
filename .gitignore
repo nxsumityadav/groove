@@ -4,3 +4,5 @@ backend/uploads/
 frontend/dist/
 .DS_Store
 frontend/public/_fixture-*
+.vercel
+.env*

@@ -1,15 +1,19 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build -w frontend",
-  "outputDirectory": "frontend/dist",
-  "functions": {
-    "api/index.js": {
-      "runtime": "nodejs22.x"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "frontend": {
+      "root": "frontend/",
+      "framework": "vite",
+      "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+    },
+    "backend": {
+      "root": "backend/",
+      "framework": "express",
+      "entrypoint": "app.js"
     }
   },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index.js" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": { "service": "backend" } },
+    { "source": "/(.*)", "destination": { "service": "frontend" } }
   ]
 }
